@@ -32,3 +32,29 @@
   ```sql
   CREATE INDEX idx_bookings_user ON bookings(user_id);
   CREATE INDEX idx_reviews_property ON reviews(property_id);
+
+
+# Subqueries Documentation
+
+## Query Explanations
+
+### 1. Non-correlated Subquery (High-rated Properties)
+- **Purpose**: Identify properties with excellent ratings (avg > 4.0)
+- **Logic**:
+  - Inner query calculates average rating per property
+  - Outer query filters properties where this average > 4.0
+- **Performance Note**: Consider creating an index on `reviews.property_id`
+
+### 2. Correlated Subquery (Frequent Bookers)
+- **Purpose**: Find power users with > 3 bookings
+- **Logic**:
+  - Inner query counts bookings for each user
+  - Outer query filters users where count > 3
+  - Correlation via `user_id` relationship
+- **Optimization Tip**: An index on `bookings.user_id` will improve performance
+
+## Performance Considerations
+```sql
+-- Recommended indexes for these queries
+CREATE INDEX idx_reviews_property ON reviews(property_id);
+CREATE INDEX idx_bookings_user ON bookings(user_id);
