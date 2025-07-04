@@ -58,3 +58,30 @@
 -- Recommended indexes for these queries
 CREATE INDEX idx_reviews_property ON reviews(property_id);
 CREATE INDEX idx_bookings_user ON bookings(user_id);
+
+
+# Aggregations and Window Functions Documentation
+
+## Query Explanations
+
+### 1. Aggregation with GROUP BY (Bookings per User)
+- **Purpose**: Calculate booking frequency by user
+- **Key Features**:
+  - `COUNT()` aggregates bookings per user
+  - `LEFT JOIN` ensures all users are included (even with 0 bookings)
+  - `GROUP BY` groups results by user attributes
+- **Performance Tip**: Index on `bookings.user_id` improves performance
+
+### 2. Window Functions (Property Rankings)
+- **Purpose**: Rank properties by popularity (booking count)
+- **Key Features**:
+  - `RANK()` shows tied properties with same rank number
+  - `ROW_NUMBER()` gives unique sequential numbers
+  - `OVER()` clause defines the window frame
+- **Business Use Case**: Identify top-performing properties
+
+## Performance Considerations
+```sql
+-- Recommended indexes
+CREATE INDEX idx_bookings_user ON bookings(user_id);
+CREATE INDEX idx_bookings_property ON bookings(property_id);
